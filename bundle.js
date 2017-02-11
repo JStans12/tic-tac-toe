@@ -63,11 +63,50 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+var Game = function(boardState){
+  this.boardState = boardState;
+}
+
+Game.prototype.checkForWinner = function(){
+  var state = this.boardState
+  if (hasWon('o', state)) {
+    return "o";
+  } else if (hasWon('x', state)) {
+    return "x";
+  } else {
+    return "none";
+  }
+}
+
+function hasWon(marker, state){
+  if(
+    (state[0] == marker && state[1] == marker && state[2] == marker) ||
+    (state[3] == marker && state[4] == marker && state[5] == marker) ||
+    (state[6] == marker && state[7] == marker && state[8] == marker) ||
+    (state[0] == marker && state[3] == marker && state[6] == marker) ||
+    (state[1] == marker && state[4] == marker && state[7] == marker) ||
+    (state[2] == marker && state[5] == marker && state[8] == marker) ||
+    (state[0] == marker && state[4] == marker && state[8] == marker) ||
+    (state[6] == marker && state[4] == marker && state[2] == marker))
+  {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+module.exports = Game;
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10294,10 +10333,39 @@ return jQuery;
 
 
 /***/ }),
-/* 1 */
+/* 2 */
+/***/ (function(module, exports) {
+
+var Player = function(marker, name){
+  this.marker = marker;
+  this.name = name;
+}
+
+module.exports = Player;
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(0);
+var $ = __webpack_require__(1);
+var socket = io();
+var Player = __webpack_require__(2);
+var Game = __webpack_require__(0);
+var playerRole;
+
+socket.on('connectCount', function(connectCount){
+  if(playerRole == undefined){
+    setPlayerRole(connectCount);
+  }
+  console.log(connectCount);
+});
+
+function setPlayerRole(role){
+  var roles = {1: 'o player', 2: 'x player',};
+  playerRole = roles[role] || 'spectating';
+  $('#game-state').html(playerRole);
+}
 
 $(document).ready(function(){
   $('td').click(function(){

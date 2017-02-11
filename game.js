@@ -14,7 +14,7 @@ Game.prototype.checkForWinner = function(){
 }
 
 function hasWon(marker, state){
-  if (
+  if(
     (state[0] == marker && state[1] == marker && state[2] == marker) ||
     (state[3] == marker && state[4] == marker && state[5] == marker) ||
     (state[6] == marker && state[7] == marker && state[8] == marker) ||
@@ -22,8 +22,8 @@ function hasWon(marker, state){
     (state[1] == marker && state[4] == marker && state[7] == marker) ||
     (state[2] == marker && state[5] == marker && state[8] == marker) ||
     (state[0] == marker && state[4] == marker && state[8] == marker) ||
-    (state[6] == marker && state[4] == marker && state[2] == marker)
-  ){
+    (state[6] == marker && state[4] == marker && state[2] == marker))
+  {
     return true;
   } else {
     return false;
