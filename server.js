@@ -19,6 +19,12 @@ io.on('connection', function(socket){
     io.emit('connectCount', connectCount);
     console.log(connectCount);
   });
+  socket.on('takeTurn', function(move){
+    io.emit('takeTurn', move);
+  });
+  socket.on('myNameIs', function(name){
+    io.emit('myNameIs', name);
+  });
 });
 
 http.listen(3000, function(){

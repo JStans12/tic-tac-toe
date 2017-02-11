@@ -10354,7 +10354,8 @@ var Player = __webpack_require__(2);
 var Game = __webpack_require__(0);
 var player;
 var playerRole;
-var enemyName = 'sandy'
+var enemyName;
+var myTurn;
 
 socket.on('connectCount', function(connectCount){
   if(playerRole == undefined){
@@ -10363,8 +10364,24 @@ socket.on('connectCount', function(connectCount){
   console.log(connectCount);
 });
 
+socket.on('takeTurn', function(move){
+  marker = move.slice(0,1)
+  cell = move.slice(2,4)
+  $('#' + cell).html(marker);
+  myTurn = marker != player.marker ? true:false;
+});
+
+socket.on('myNameIs', function(name){
+  if(player == undefined || name != player.name){
+    enemyName = name;
+    if(player != undefined){
+      formatGameHeader();
+    }
+  }
+});
+
 function setPlayerRole(role){
-  var roles = {1: 'o player', 2: 'x player',};
+  var roles = {1: 'x player', 2: 'o player',};
   playerRole = roles[role] || 'spectating';
   $('#game-state').html(playerRole);
   if(playerRole != 'spectating'){
@@ -10375,10 +10392,10 @@ function setPlayerRole(role){
 function formatGameHeader(){
   $('#game-state').html('');
   var enemy = enemyName == undefined ? '...':enemyName;
-  if(player.marker == 'o'){
-    $('#game-state').html('o: ' + player.name + ' - x: ' + enemy + '');
+  if(player.marker == 'x'){
+    $('#game-state').html('x: ' + player.name + ' - o: ' + enemy + '');
   } else {
-    $('#game-state').html('o: ' + enemy + ' - x: ' + player.name + '');
+    $('#game-state').html('x: ' + enemy + ' - o: ' + player.name + '');
   }
   $('#name-picker').addClass('hidden');
 }
@@ -10389,10 +10406,16 @@ $(document).ready(function(){
     var name = $('#player-name').val();
     player = new Player(marker, name);
     formatGameHeader(marker);
+    myTurn = player.marker == 'x' ? true:false
+    socket.emit('myNameIs', player.name);
   });
 
   $('td').click(function(){
-    $(this).html('x');
+    if(myTurn == true && $(this).html() == ''){
+      var move = '' + player.marker + '-' + $(this).attr('id')
+      socket.emit('takeTurn', move);
+      myTurn = false;
+    }
   });
 
   $('form').submit(function(e){
