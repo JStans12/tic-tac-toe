@@ -11,7 +11,7 @@ socket.on('connectCount', function(connectCount){
   if(playerRole == undefined){
     setPlayerRole(connectCount);
   }
-  console.log(connectCount);
+  socket.emit('whatsYourName');
 });
 
 socket.on('takeTurn', function(move){
@@ -36,6 +36,12 @@ socket.on('myNameIs', function(name){
     if(player != undefined){
       formatGameHeader();
     }
+  }
+});
+
+socket.on('whatsYourName', function(){
+  if(player != undefined){
+    socket.emit('myNameIs', player.name);
   }
 });
 

@@ -25,6 +25,9 @@ io.on('connection', function(socket){
   socket.on('myNameIs', function(name){
     io.emit('myNameIs', name);
   });
+  socket.on('whatsYourName', function(){
+    io.emit('whatsYourName');
+  })
 });
 
 http.listen(3000, function(){
