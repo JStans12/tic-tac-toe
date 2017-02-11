@@ -4,7 +4,12 @@ body {
 
 #header {
   margin: 50px;
+  font-size: 44px;
   text-align: center;
+}
+
+#name-picker {
+  font-size: 26px !important;
 }
 
 #game-board {

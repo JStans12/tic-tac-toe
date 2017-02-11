@@ -19,6 +19,7 @@ socket.on('takeTurn', function(move){
   cell = move.slice(2,4)
   $('#' + cell).html(marker);
   myTurn = marker != player.marker ? true:false;
+  showPlayerTurn();
 });
 
 socket.on('myNameIs', function(name){
@@ -43,11 +44,18 @@ function formatGameHeader(){
   $('#game-state').html('');
   var enemy = enemyName == undefined ? '...':enemyName;
   if(player.marker == 'x'){
-    $('#game-state').html('x: ' + player.name + ' - o: ' + enemy + '');
+    $('#game-state').html('x: ' + player.name + ' -vs- o: ' + enemy + '');
   } else {
-    $('#game-state').html('x: ' + enemy + ' - o: ' + player.name + '');
+    $('#game-state').html('x: ' + enemy + ' -vs- o: ' + player.name + '');
   }
   $('#name-picker').addClass('hidden');
+  if(enemyName != undefined){ showPlayerTurn() }
+}
+
+function showPlayerTurn(){
+  $('#turn-indicator').html('')
+  var name = myTurn == true ? player.name:enemyName;
+  $('#turn-indicator').html('' + name + '`s turn');
 }
 
 $(document).ready(function(){
@@ -55,8 +63,8 @@ $(document).ready(function(){
     var marker = playerRole[0];
     var name = $('#player-name').val();
     player = new Player(marker, name);
-    formatGameHeader(marker);
     myTurn = player.marker == 'x' ? true:false
+    formatGameHeader(marker);
     socket.emit('myNameIs', player.name);
   });
 
