@@ -6,7 +6,14 @@
   <script type="text/javascript" src="bundle.js" charset="utf-8"></script>
 </head>
 <body>
-  <h3 id="game-state"><h3>
+
+  <div id='header'>
+    <h3 id='game-state'><h3>
+    <form id='name-picker' class='hidden'>
+      name: <input id='player-name' type='text'>
+      <button id='name-submit' action='submit'>submit</button>
+    </form>
+  </div>
 
   <table id='game-board'>
     <tr>

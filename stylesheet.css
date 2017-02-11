@@ -1,5 +1,14 @@
+body {
+  font-family: helvetica;
+}
+
+#header {
+  margin: 50px;
+  text-align: center;
+}
+
 #game-board {
-  margin: 30px;
+  margin: auto;
   border-collapse: collapse;
 }
 
@@ -27,4 +36,8 @@
 
 #t1, #t4, #t7 {
   border-left: none !important;
+}
+
+.hidden {
+  display: none;
 }
