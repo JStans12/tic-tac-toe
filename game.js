@@ -5,11 +5,11 @@ var Game = function(boardState){
 Game.prototype.checkForWinner = function(){
   var state = this.boardState
   if (hasWon('o', state)) {
-    return "o";
+    return 'o';
   } else if (hasWon('x', state)) {
-    return "x";
+    return 'x';
   } else {
-    return "none";
+    return 'none';
   }
 }
 

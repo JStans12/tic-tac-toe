@@ -77,11 +77,11 @@ var Game = function(boardState){
 Game.prototype.checkForWinner = function(){
   var state = this.boardState
   if (hasWon('o', state)) {
-    return "o";
+    return 'o';
   } else if (hasWon('x', state)) {
-    return "x";
+    return 'x';
   } else {
-    return "none";
+    return 'none';
   }
 }
 
@@ -10369,7 +10369,15 @@ socket.on('takeTurn', function(move){
   cell = move.slice(2,4)
   $('#' + cell).html(marker);
   myTurn = marker != player.marker ? true:false;
-  showPlayerTurn();
+  var boardState = getBoardState();
+  var game = new Game(boardState);
+  var winner = game.checkForWinner();
+  if(winner != 'none'){
+    showWinner(winner);
+    myTurn = false;
+  } else {
+    showPlayerTurn();
+  }
 });
 
 socket.on('myNameIs', function(name){
@@ -10380,6 +10388,18 @@ socket.on('myNameIs', function(name){
     }
   }
 });
+
+function getBoardState(){
+  state = [];
+  cells = ['t1', 't2', 't3',
+           't4', 't5', 't6',
+           't7', 't8', 't9']
+  for (var i = 0; i < cells.length; i++) {
+    var cellState = $('#' + cells[i]).html();
+    state.push(cellState);
+  }
+  return state;
+}
 
 function setPlayerRole(role){
   var roles = {1: 'x player', 2: 'o player',};
@@ -10406,6 +10426,12 @@ function showPlayerTurn(){
   $('#turn-indicator').html('')
   var name = myTurn == true ? player.name:enemyName;
   $('#turn-indicator').html('' + name + '`s turn');
+}
+
+function showWinner(winner){
+  $('#turn-indicator').html('');
+  var outcome = player.marker == winner ? "You Win!":"You Lose!";
+  $('#turn-indicator').html(outcome)
 }
 
 $(document).ready(function(){
