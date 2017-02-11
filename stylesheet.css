@@ -1,0 +1,30 @@
+#game-board {
+  margin: 30px;
+  border-collapse: collapse;
+}
+
+#game-board td {
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  font-size: 88px;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: center;
+}
+
+#t1, #t2, #t3 {
+  border-top: none !important;
+}
+
+#t3, #t6, #t9 {
+  border-right: none !important;
+}
+
+#t7, #t8, #t9 {
+  border-bottom: none !important;
+}
+
+#t1, #t4, #t7 {
+  border-left: none !important;
+}
